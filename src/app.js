@@ -1,23 +1,14 @@
-import swaggerUi from "swagger-ui-express";
-import swaggerJsdoc from "swagger-jsdoc";
-
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-// const swaggerUi = require("swagger-ui-express");
-// const swaggerJsdoc = require("swagger-jsdoc");
+const sensorRouter = require("./router");
+
+const PORT = require("./constants/index");
 
 const app = express();
 app.use(cors());
 app.use(express.static("public"));
-const port = 8090;
-const specs = swaggerJsdoc(swaggerOptions);
-app.use(
-  routes.swagger,
-  swaggerUi.serve,
-  swaggerUi.setup(specs, { explorer: true })
-);
 
 mongoose.Promise = global.Promise;
 mongoose.set("strictQuery", false);
@@ -33,11 +24,14 @@ app.get("/", (req, res) => {
   res.send("Server Connected Success");
 });
 
-app.use("/fireSensor", require("./router/fireSensorRouter"));
-app.use("/soilSensor", require("./router/soilSensorRouter"));
-app.use("/inclSensor", require("./router/inclSensorRouter"));
-app.listen(port, () => {
+app.use("/", sensorRouter);
+
+const { swaggerUi, specs } = require("./swagger");
+
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs, { explorer: true }));
+
+app.listen(PORT, () => {
   console.log("###########################################");
-  console.log(`#### Example app listening on port ${port} ####`);
+  console.log(`#### Example app listening on port ${PORT} ####`);
   console.log("###########################################");
 });

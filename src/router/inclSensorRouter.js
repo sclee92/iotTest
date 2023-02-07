@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const inclSensor = require("../src/models/inclSensor");
+const inclSensor = require("../models/inclSensor");
 
 router.get("/", (req, res) => {
   inclSensor.find({}, function (err, inclSensor) {

@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const soilSensor = require("../src/models/soilSensor");
+const soilSensor = require("../models/soilSensor");
 
 router.get("/", (req, res) => {
   soilSensor.find({}, function (err, soilSensor) {
